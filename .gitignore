@@ -2,6 +2,15 @@
 __pycache__/
 *.py[cod]
 
+# text exitors
+[._]*.md.s[a-w][a-z]
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
 # C extensions
 *.so
 
