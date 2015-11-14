@@ -1,3 +1,11 @@
+# source image
+
+#only run locally -- possible more to do w.r.t. deploy
+#but we're building locally so the image will get built here!
+first build base image with
+
+docker build -t acacia acacia/
+
 # headspring
 generic-ish python source API
 
