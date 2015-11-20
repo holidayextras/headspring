@@ -8,9 +8,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential &&\
 RUN groupadd -r acacia && useradd -r -g acacia acacia
 
 
+COPY ship /bin/
+
+ENTRYPOINT ["/bin/ship"]
+CMD ["run"]
+
 #COPY ship.d /etc/ship.d
 
-CMD ["/etc/ship.d/run"]
+#CMD ["/etc/ship.d/run"]
+#COPY ship.d /etc/ship.d/
 #RUN pip install google-api-python-client==1.4.2 flask tornado
 #
 #ADD headspring/* /app/
