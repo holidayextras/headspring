@@ -2,5 +2,10 @@
 
 set -ev
 
+export | awk '{print $3}' >> /app/config
+ls /app
+export
+cat /app/config
+
 CMD="python /app/start.py"
 exec su acacia -c "$CMD"

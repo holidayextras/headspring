@@ -1,28 +1,38 @@
-import traceback
-import uuid
-import json
-import hashlib
 import base64
 import logging
+import httplib2
+import hashlib
+import json
+import os
+import sys
+import traceback
+import uuid
 
 from oauth2client.client import GoogleCredentials
 from apiclient import discovery
 from flask import Flask, abort, jsonify, request
 
-from tools import generate_id, get_pubsub_client as get_client
+from tools import generate_id
+from ConfigParser import ConfigParser
 
-#stream_name_ = 'banana' 
-#stream_name_ = 'appleCommander' 
-STREAM_NAME = 'projects/hx-test/topics/badgerbear'
-PUBSUB_SCOPES = ['https://www.googleapis.com/auth/pubsub']
-NUM_RETRIES = 3
-PROJ_NAME = "hx-test"
+
+os.chdir(os.path.dirname(sys.argv[0]))  # change into execution directory
+config = ConfigParser()
+
+try:
+    with open('config') as _fp:
+        config.readfp(_fp)
+except Exception as e:
+    logging.info('failed to open config file')
+
+
+PROJ_NAME = config.get('override', 'proj_name')
 
 app = Flask(__name__)
 def get_pubsub_client(version='v1beta2'):
     """Build the pubsub client."""
 
-    import httplib2
+    PUBSUB_SCOPES = ['https://www.googleapis.com/auth/pubsub']
     get_pubsub_client.PUBSUB_SCOPES = ['https://www.googleapis.com/auth/pubsub']
     credentials = GoogleCredentials.get_application_default()
 
@@ -43,9 +53,8 @@ def publish(client, pubsub_topic, data_line, msg_attributes=None):
         msg_payload['attributes'] = msg_attributes
     body = {'messages': [msg_payload]}
     resp = client.projects().topics().publish(
-        topic=pubsub_topic, body=body).execute(num_retries=NUM_RETRIES)
+        topic=pubsub_topic, body=body).execute(num_retries=config.getint('override', 'num_retries'))
     logging.info(resp)
-#    logging.log(resp)
     return resp
 
 #
@@ -56,13 +65,13 @@ def index():
     """Generic just because"""
     return 'producer!'
 
-@app.route('/ping')
+@app.route(config.get('override', 'health_route'))
 def ping():
     """health"""
     app.logger.info('health check')
     return 'pong'
 
-@app.route('/post', methods=['POST'])
+@app.route(config.get('override', 'post_route'), methods=['POST'])
 def producer():
     """Generic JSON POST"""
 
@@ -90,7 +99,7 @@ def producer():
 
     try:
         app.logger.debug('writing to stream')
-        publish(client, 'projects/hx-test/topics/badgerbear', json.dumps(reqdat_))
+        publish(client, config.get('override', 'stream_name'), json.dumps(reqdat_))
 #        k.put_record(stream_name_, json.dumps(reqdat_), hsh)
     except Exception as e:
         app.logger.error(e)
@@ -99,14 +108,8 @@ def producer():
         return json.dumps({'response': 'failure'})
         
     return json.dumps({'response': 'success'})
-#
-##    return jsonify(**reqdat_)
-#
-## curl -X POST -H "Content-Type:application/json" -d '{"name":"health","tags" : [ "traffic", "sustainability" ]}' 127.0.0.1:5000/post
-#
-#    k = kinesis.connect_to_region('us-west-2')
+
+
 if __name__ == '__main__':
     
     app.run(debug=True, port=5001)
-    
-

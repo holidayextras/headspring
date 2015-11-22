@@ -37,4 +37,4 @@ kubectl get services prod-test
 
 # curl some stuff to it:
 
-curl -X POST -H "Content-Type:application/json" -d '{"name":"health","tags" : [ "traffic", "sustainability" ]}' [your IP]:8080/post
+curl -X POST -H "Content-Type:application/json" -d '{"name":"bears","tags" : [ "stuff", "more stuff" ]}' 127.0.0.1:5000/post

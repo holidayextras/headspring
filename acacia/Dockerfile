@@ -1,6 +1,8 @@
 FROM google/cloud-sdk
 
+RUN echo
 RUN apt-get update
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential &&\
     DEBIAN_FRONTEND=noninteractive apt-get install -y python-dev &&\
     DEBIAN_FRONTEND=noninteractive apt-get install -y python-pip
