@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential &&\
 RUN groupadd -r acacia && useradd -r -g acacia acacia
 
 
-COPY ship /bin/
+COPY ship env_to_config_override.py /bin/
 
 ENTRYPOINT ["/bin/ship"]
 CMD ["run"]

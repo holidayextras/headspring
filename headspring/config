@@ -1,0 +1,7 @@
+[DEFAULT]
+stream_name = projects/hx-test/topics/badgerbear
+num_retries = 3
+proj_name = hx-test
+post_route = /post
+health_route = /ping
+[override]
