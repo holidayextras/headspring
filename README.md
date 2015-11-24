@@ -4,6 +4,7 @@
 #but we're building locally so the image will get built here!
 first build base image with
 
+cd acacia
 docker build -t acacia acacia/
 
 # headspring
