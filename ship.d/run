@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -ev
+cd /app
+CMD="python start.py"
+exec su acacia -c "$CMD"
