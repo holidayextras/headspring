@@ -1,5 +1,6 @@
 [DEFAULT]
 stream_name = projects/hx-test/topics/badgerbear
+error_stream_name = projects/hx-test/topics/badgerberror
 num_retries = 3
 proj_name = hx-test
 post_route = /post

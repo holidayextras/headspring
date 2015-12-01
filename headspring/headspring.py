@@ -39,7 +39,12 @@ def producer():
     """Generic JSON POST"""
 
     reqdat_ = generate_id()
-    client = get_pubsub_client()
+
+    try:
+        client = get_pubsub_client()
+    except:
+        app.logger.error('Pubsub client unavailable')
+        abort(503, 'stream client unavailable')
 
     app.logger.debug('webservice processing request')
     app.logger.debug(json.dumps(reqdat_))
@@ -50,11 +55,14 @@ def producer():
 
     try:
         hsh = json.dumps(request.json)
-        print hsh
         resource_hash = hashlib.md5(hsh).hexdigest()
-        print resource_hash
     except Exception as e:
         app.logger.debug('JSON is unhashable')
+        publish(client,
+                config.get('override', 'error_stream_name'),
+                json.dumps(reqdat_),
+                app.logger,
+                num_retries=config.getint('override', 'num_retries'))
         abort(400, 'Cannot interpret JSON post')
 
     reqdat_['resource'] = request.json
