@@ -55,9 +55,7 @@ def producer():
 
     try:
         hsh = json.dumps(request.json)
-        print hsh
         resource_hash = hashlib.md5(hsh).hexdigest()
-        print resource_hash
     except Exception as e:
         app.logger.debug('JSON is unhashable')
         abort(400, 'Cannot interpret JSON post')
