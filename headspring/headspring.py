@@ -39,7 +39,12 @@ def producer():
     """Generic JSON POST"""
 
     reqdat_ = generate_id()
-    client = get_pubsub_client()
+
+    try:
+        client = get_pubsub_client()
+    except:
+        app.logger.error('Pubsub client unavailable')
+        abort(503, 'stream client unavailable')
 
     app.logger.debug('webservice processing request')
     app.logger.debug(json.dumps(reqdat_))
