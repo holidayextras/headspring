@@ -58,11 +58,6 @@ def producer():
         resource_hash = hashlib.md5(hsh).hexdigest()
     except Exception as e:
         app.logger.debug('JSON is unhashable')
-        publish(client,
-                config.get('override', 'error_stream_name'),
-                json.dumps(reqdat_),
-                app.logger,
-                num_retries=config.getint('override', 'num_retries'))
         abort(400, 'Cannot interpret JSON post')
 
     reqdat_['resource'] = request.json
