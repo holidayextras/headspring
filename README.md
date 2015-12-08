@@ -14,28 +14,32 @@ generic-ish python source API
 
 # build the image:
 
-docker build -t gcr.io/hx-test/prod-test .
+docker build -t gcr.io/hx-test/source-master .
 
 # push to gcr.io:
 
-gcloud docker push gcr.io/hx-test/prod-test
+gcloud docker push gcr.io/hx-test/source-master
 
 # create the cluster (note the scope):
 
-gcloud container clusters create prod-test --num-nodes 1 --machine-type g1-small --scopes https://www.googleapis.com/auth/cloud-platform
+gcloud container clusters create NAME --num-nodes 1 --machine-type g1-small --scopes https://www.googleapis.com/auth/cloud-platform
 
 # create the pod:
 
-kubectl run prod-test --image=gcr.io/hx-test/prod-test --port=8080
+kubectl run NAME --image=gcr.io/hx-test/source-master --port=8080
 
 # expose port 8080 to the outside world:
 
-kubectl expose rc prod-test --create-external-load-balancer=true
+kubectl expose rc NAME --type="LoadBalancer" --session-affinity="ClientIP"
 
 # list the IP address the pod is listening on (this will take a few minutes to allocate the external IP):
 
-kubectl get services prod-test
+kubectl get services NAME
+
+For more verbose information (incl errors):
+
+kubectl describe services/NAME
 
 # curl some stuff to it:
 
-curl -X POST -H "Content-Type:application/json" -d '{"name":"bears","tags" : [ "stuff", "more stuff" ]}' 127.0.0.1:5000/post
+curl -X POST -H "Content-Type:application/json" -d '{"name":"bears","tags" : [ "stuff", "more stuff" ]}' [external IP]:8080/post
