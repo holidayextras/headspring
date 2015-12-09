@@ -30,7 +30,7 @@ kubectl run NAME --image=gcr.io/hx-test/source-master --port=8080
 
 # expose port 8080 to the outside world:
 
-kubectl expose rc NAME --type="LoadBalancer" --session-affinity="ClientIP"
+kubectl expose rc NAME --type="LoadBalancer"
 
 # list the IP address the pod is listening on (this will take a few minutes to allocate the external IP):
 
