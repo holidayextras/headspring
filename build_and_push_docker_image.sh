@@ -7,4 +7,4 @@ docker build -t acacia acacia/
 docker build -t gcr.io/hx-test/source-master-cidev .
 
 #  push the application image to gcr
-gcloud docker push gcr.io/hx-test/source-master-cidev
+/opt/google-cloud-sdk/bin/gcloud docker push gcr.io/hx-test/source-master-cidev
