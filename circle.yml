@@ -1,3 +1,10 @@
+test:
+  pre:
+    - cd pip install -r  $HOME/$CIRCLE_PROJECT_REPONAME/headspring/requirements.txt
+
+  override:
+    - cd $HOME/$CIRCLE_PROJECT_REPONAME/headspring && nosetests
+
 deployment:
   builddev:
     branch: circle-ci-dev
