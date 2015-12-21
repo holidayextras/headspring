@@ -7,7 +7,7 @@ test:
 
 deployment:
   builddev:
-    branch: circle-ci-dev
+    branch: master
     commands:
       - cd $HOME/$CIRCLE_PROJECT_REPONAME && echo $GOOGLE_CREDENTIALS > account.json
       - cd $HOME/$CIRCLE_PROJECT_REPONAME && gcloud auth activate-service-account --key-file account.json
