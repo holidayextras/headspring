@@ -1,0 +1,15 @@
+test:
+  pre:
+    - sudo pip install -r  $HOME/$CIRCLE_PROJECT_REPONAME/headspring/requirements.txt
+
+  override:
+    - cd $HOME/$CIRCLE_PROJECT_REPONAME/headspring && nosetests
+
+deployment:
+  builddev:
+    branch: circle-ci-dev
+    commands:
+      - cd $HOME/$CIRCLE_PROJECT_REPONAME && echo $GOOGLE_CREDENTIALS > account.json
+      - cd $HOME/$CIRCLE_PROJECT_REPONAME && gcloud auth activate-service-account --key-file account.json
+      - sudo service docker start
+      - cd $HOME/$CIRCLE_PROJECT_REPONAME && sudo ./build_and_push_docker_image.sh
