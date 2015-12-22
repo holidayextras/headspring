@@ -7,9 +7,7 @@ test:
 
 deployment:
   builddev:
-    branch: master
+    branch: circle-ci-cleanup
     commands:
       - cd $HOME/$CIRCLE_PROJECT_REPONAME && echo $GOOGLE_CREDENTIALS > account.json
-      - cd $HOME/$CIRCLE_PROJECT_REPONAME && gcloud auth activate-service-account --key-file account.json
-      - sudo service docker start
       - cd $HOME/$CIRCLE_PROJECT_REPONAME && sudo ./build_and_push_docker_image.sh
