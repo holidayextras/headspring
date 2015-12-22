@@ -1,7 +1,7 @@
 #!/bin/bash
 
 /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file account.json
-ret_var=?
+ret_var=$?
 if [ $ret_var -eq 0 ]; then
   service docker start
   ret_var=$?
