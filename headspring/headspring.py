@@ -17,6 +17,7 @@ from tools import generate_id, get_config_parser, get_pubsub_client, publish
 app = Flask(__name__)
 
 config = get_config_parser('config', app.logger)
+app.logger.setLevel(config.get('override', 'log_level'))
 
 PROJ_NAME = config.get('override', 'proj_name')
 
