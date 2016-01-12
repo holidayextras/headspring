@@ -4,4 +4,5 @@ num_retries = 3
 proj_name = hx-test
 post_route = /post
 health_route = /ping
+log_level = DEBUG
 [override]
