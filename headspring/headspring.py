@@ -9,6 +9,8 @@ run from the same directory as the app.
 
 import hashlib
 import json
+import sys
+import logging
 
 from flask import Flask, abort, jsonify, request
 
@@ -18,6 +20,16 @@ app = Flask(__name__)
 
 config = get_config_parser('config', app.logger)
 app.logger.setLevel(config.get('override', 'log_level'))
+
+format_str = '%(asctime)s\t%(levelname)s ' \
+             '-- %(processName)s %(filename)s:%(lineno)s -- %(message)s'
+formatter = logging.Formatter(format_str)
+
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setFormatter(formatter)
+stdout_handler.setLevel(config.get('override', 'log_level'))
+
+app.logger.addHandler(stdout_handler)
 
 PROJ_NAME = config.get('override', 'proj_name')
 
