@@ -78,7 +78,7 @@ def producer():
 
     try:
         app.logger.debug('writing to stream')
-        publish(pubsub_client,
+        publish(g.pubsub_client,
                 config.get('override', 'stream_name'),
                 json.dumps(reqdat_),
                 app.logger,
