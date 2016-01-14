@@ -33,8 +33,11 @@ app.logger.addHandler(stdout_handler)
 
 PROJ_NAME = config.get('override', 'proj_name')
 
-pubsub_client = get_pubsub_client()
 
+
+@app.before_request
+def setup_client(*args, **kwargs):
+    g.pubsub_client = get_pubsub_client()
 
 
 @app.route('/')
