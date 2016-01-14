@@ -33,6 +33,9 @@ app.logger.addHandler(stdout_handler)
 
 PROJ_NAME = config.get('override', 'proj_name')
 
+pubsub_client = get_pubsub_client()
+
+
 
 @app.route('/')
 def index():
@@ -53,12 +56,6 @@ def producer():
 
     reqdat_ = generate_id()
 
-    try:
-        client = get_pubsub_client()
-    except:
-        app.logger.error('Pubsub client unavailable')
-        abort(503, 'stream client unavailable')
-
     app.logger.debug('webservice processing request')
     app.logger.debug(json.dumps(reqdat_))
 
@@ -78,7 +75,7 @@ def producer():
 
     try:
         app.logger.debug('writing to stream')
-        publish(client,
+        publish(pubsub_client,
                 config.get('override', 'stream_name'),
                 json.dumps(reqdat_),
                 app.logger,
