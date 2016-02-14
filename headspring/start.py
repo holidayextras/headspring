@@ -3,6 +3,7 @@ from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from headspring import app
 
-http_server = HTTPServer(WSGIContainer(app))
-http_server.listen(8080)
-IOLoop.instance().start()
+server = HTTPServer(app)
+server.bind(8080)
+server.start(0)  # Forks multiple sub-processes
+IOLoop.current().start()
