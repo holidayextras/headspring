@@ -1,14 +1,11 @@
 FROM google/cloud-sdk
 
 RUN echo
-RUN apt-get update
+RUN apk update && apk upgrade
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential &&\
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python-dev &&\
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python-pip
+RUN apk add --upgrade alpine-sdk python-dev py-pip
 
-RUN groupadd -r acacia && useradd -r -g acacia acacia
-
+RUN addgroup -S acacia && adduser -S acacia acacia
 
 COPY ship env_to_config_override.py /bin/
 
